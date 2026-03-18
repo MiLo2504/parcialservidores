@@ -11,13 +11,14 @@ BASE_DIR = Path(__file__).resolve().parents[2]
 PROJECT_ROOT = BASE_DIR.parent
 FRONTEND_DIR = PROJECT_ROOT / "frontend"
 FRONTEND_TEMPLATES_DIR = PROJECT_ROOT / "frontend" / "templates"
+FRONTEND_INDEX_FILE = FRONTEND_DIR / "index.html"
 FRONTEND_HOLA_FILE = FRONTEND_DIR / "hola.html"
 
 MINIO_CFG = {
     "endpoint": os.getenv("MINIO_ENDPOINT", "localhost:9000"),
     "access_key": os.getenv("MINIO_ACCESS_KEY", "users3"),
     "secret_key": os.getenv("MINIO_SECRET_KEY", "demo1234"),
-    "bucket": os.getenv("MINIO_BUCKET", "demo-bucket"),
+    "bucket": os.getenv("MINIO_BUCKET", "bucket"),
     "secure": os.getenv("MINIO_SECURE", "false").lower() == "true",
 }
 
@@ -32,6 +33,7 @@ FTP_CFG = {
 
 SMB_CFG = {
     "host": os.getenv("SMB_HOST", HOST),
+    "server_name": os.getenv("SMB_SERVER_NAME", ""),
     "share": os.getenv("SMB_SHARE", "smb_data"),
     "user": os.getenv("SMB_USER", "usersmb"),
     "password": os.getenv("SMB_PASS", "Demo1234!"),

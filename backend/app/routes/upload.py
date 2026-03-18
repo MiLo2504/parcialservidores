@@ -2,7 +2,7 @@ from fastapi import APIRouter, File, Form, HTTPException, Request, UploadFile
 from fastapi.responses import FileResponse, HTMLResponse, JSONResponse
 from fastapi.templating import Jinja2Templates
 
-from app.config.settings import FRONTEND_HOLA_FILE, FRONTEND_TEMPLATES_DIR
+from app.config.settings import FRONTEND_DIR, FRONTEND_HOLA_FILE, FRONTEND_INDEX_FILE, FRONTEND_TEMPLATES_DIR
 from app.services.ftp_service import up_ftp
 from app.services.nfs_service import up_nfs
 from app.services.s3_service import up_s3
@@ -18,10 +18,21 @@ async def index(request: Request):
     if index_template.exists():
         return templates.TemplateResponse("index.html", {"request": request})
 
+    if FRONTEND_INDEX_FILE.exists():
+        return FileResponse(str(FRONTEND_INDEX_FILE), media_type="text/html")
+
     if FRONTEND_HOLA_FILE.exists():
         return FileResponse(str(FRONTEND_HOLA_FILE), media_type="text/html")
 
     raise HTTPException(404, "No se encontró index.html ni hola.html en frontend")
+
+
+@router.get("/style.css")
+async def style_css():
+    css_file = FRONTEND_DIR / "style.css"
+    if css_file.exists():
+        return FileResponse(str(css_file), media_type="text/css")
+    raise HTTPException(404, "No se encontró style.css en frontend")
 
 
 @router.post("/upload")
